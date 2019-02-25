@@ -5,72 +5,116 @@
 
 amazingShows = ["Archer", "Boondocks", "Cowboy Bebop", "Daria", "Futurama", "Rick and Morty", "Samurai Jack"];
 rating = ["y", "g", "pg", "pg-13", "r"];
+var newShowName;
 
-$("button").on("click", function () {
+//buttons are dynamics created so it needs to be this way. 
+$(document).on("click", ".classShows", function () {
     var showName = $(this).attr("data-showName");
-    var api_key = "4xwiyJAiQbV1UanpvfTtZQJnkETQG95Y";
-    var queryURL = "https://api.giphy.com/v1/gifs/search?" + showName  + api_key;
+    var api_key = "api_key=4xwiyJAiQbV1UanpvfTtZQJnkETQG95Y";
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + showName + "&" + api_key;
+    getGifs(queryURL);
 })
 
 
-var search =
 
+function renderButtons() {
 
-    function renderButtons() {
+    var $buttonContainer = $('.buttons');
+    $buttonContainer.empty();
+    //if you don't care about the index you can just do this, if you need the index, that is the 2nd parameter
+    //in the amazingShows.forEach(function(showName, **iterator**){})
+    amazingShows.forEach(function (showName) {
+        console.log(showName);
+        var $createButton = $("<button>")
+            .addClass("classShows")
+            .attr("data-showName", showName)
+            .text(showName);
 
-        var $buttonContainer = $('.buttons');
-        $buttonContainer.empty();
-        //if you don't care about the index you can just do this, if you need the index, that is the 2nd parameter
-        //in the amazingShows.forEach(function(showName, **iterator**){})
-        amazingShows.forEach(function (showName) {
-            console.log(showName);
-            var $createButton = $("<button>")
-                .addClass("classShows")
-                .attr("data-name", showName)
-                .text(showName);
+        $buttonContainer.append($createButton);
+    });
+};
 
-            $buttonContainer.append($createButton);
-        });
-    };
+renderButtons();
 
-
-
-$("#addShow").on("click", function (event) {
+$("#submit").on("click", function (event) {
     event.preventDefault();
-    var showName = $("#amazingShowsInput").val().trim();
-    amazingShows.push(showName);
+    //commented this out since newShowname.length isn't right and I need it to be. 
+    // if (newShowName.length > 0) {
+    newShowName = $("#amazingShowsInput").val().trim();
+    amazingShows.push(newShowName);
     renderButtons();
+    // }else {
+    // alert("type something silly");
+    // }
+
 })
 
+function getGifs(queryURL) {
 
-//add for loop to go through ratings array for more DRY. 
-$.ajax({
-    // this line below isn't right after .something()
+    //add for loop to go through ratings array for more DRY. 
+    $.ajax({
+        // this line below isn't right after .something()
 
-    url: queryURL,
-    method: "GET",
-    data: {
-        api_key: "4xwiyJAiQbV1UanpvfTtZQJnkETQG95Y",
-        rating: "y",
-        limit: 3,
-        // q: ,       
+        url: queryURL,
+        method: "GET",
+        // data: {
+        //     api_key: "4xwiyJAiQbV1UanpvfTtZQJnkETQG95Y",
+        //     rating: "y",
+        //     limit: 3,
+        //     // q: ,       
+        // },
+    }).then(function (response) {
+        // //activity06
+        // $("#movie-view").text(JSON.strigify(response, null, 2))
+        // //class activity
+        // // this is in the function so we don't need to repeat. DRY
+        // var newRow = $("<tr>"); //creates row Rename <img>? 
+        // var newTitle = $("<td>").text(response.Title);//calls the new data
+        // // Create and save a reference to new empty table row
+        // var titleID = $("<td>").text(response.Title);
+        // newRow.append(newTitle);
+        // newRow.append(newYear);
+        // newRow.apped(newActors);
+        var results = response.data;
+        for (var i = 0; i < results.length; i++) {
+            var gifDiv = $("<div>");
+            var rating = results[i].rating;
+            var p = $("<p>").text("Rating: " + rating);
+            var showImage = $("<img>");
+            showImage.attr("src", results[i].images.fixed_height.url);
+            gifDiv.prepend(p);
+            gifDiv.prepend(showImage);
+            $("#gifs-appear-here").prepend(gifDiv);
+        }
+    });
+};
+$(document).on('click', 'img', function () {
+    var state = $(this).attr("data-state");
+    if (state === "still") {
+        $(this).attr("src", $(this).attr("data-animate"));
+        $(this).attr("data-animate", "animate");
+    } else {
+        $(this).attr("src", $(this).attr("data-still"));
+        $(this).attr("data-state", "still")
+    }
+})
+//found online. My brain finds this easier to read and create tahn the above. particularly the this inside of this already
+//  $("#photo").append('<img class="gif" src="' + response.data[i].images.fixed_height_still.url + '">');
+// $('body').on('click', '.gif', function() {
+//     var src = $(this).attr("src");
+//   if($(this).hasClass('playing')){
+//      //stop
+//      $(this).attr('src', src.replace(/\.gif/i, "_s.gif"))
+//      $(this).removeClass('playing');
+//   } else {
+//     //play
+//     $(this).addClass('playing');
+//     $(this).attr('src', src.replace(/\_s.gif/i, ".gif"))
+//   }
+// });
 
-    },
-}).then(function (response) {
-    console.log(response);
-    //activity06
-    $("#movie-view").text(JSON.strigify(response, null, 2))
-    //class activity
-    // this is in the function so we don't need to repeat. DRY
-    var newRow = $("<tr>"); //creates row Rename <img>? 
-    var newTitle = $("<td>").text(response.Title);//calls the new data
-
-    // Create and save a reference to new empty table row
-    var titleID = $("<td>").text(response.Title);
-    newRow.append(newTitle);
-    newRow.append(newYear);
-    newRow.apped(newActors);
-});
+function createButton() {
+}
 //renamed class .button
 
 // $("button").on("click", function() {
@@ -83,22 +127,6 @@ $.ajax({
 //       method: "GET"
 //     })
 //       .then(function(response) {
-//         var results = response.data;
 
-//         for (var i = 0; i < results.length; i++) {
-//           var gifDiv = $("<div>");
-
-//           var rating = results[i].rating;
-
-//           var p = $("<p>").text("Rating: " + rating);
-
-//           var personImage = $("<img>");
-//           personImage.attr("src", results[i].images.fixed_height.url);
-
-//           gifDiv.prepend(p);
-//           gifDiv.prepend(personImage);
-
-//           $("#gifs-appear-here").prepend(gifDiv);
-//         }
 //       });
 //   });

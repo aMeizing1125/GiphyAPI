@@ -88,19 +88,21 @@ function getGifs(queryURL) {
         }
     });
 };
-$(document).on('click', 'img', function () {
-    var state = $(this).attr("data-state");
-    if (state === "still") {
-        $(this).attr("src", $(this).attr("data-animate"));
-        $(this).attr("data-animate", "animate");
-    } else {
-        $(this).attr("src", $(this).attr("data-still"));
-        $(this).attr("data-state", "still")
-    }
-})
-//found online. My brain finds this easier to read and create tahn the above. particularly the this inside of this already
+//WORK IN PROGRESS HERE!!! ***
+//OPTION 1 
+// $(document).on('click', 'img', function () {
+//     var state = $(this).attr("data-state");
+//     if (state === "still") {
+//         $(this).attr("src", $(this).attr("data-animate"));
+//         $(this).attr("data-animate", "animate");
+//     } else {
+//         $(this).attr("src", $(this).attr("data-still"));
+//         $(this).attr("data-state", "still")
+//     }
+// })
+//OPTION 2 found online stackoverflow. My brain finds this easier to read and create tahn the above. particularly the this inside of this already
 //  $("#photo").append('<img class="gif" src="' + response.data[i].images.fixed_height_still.url + '">');
-// $('body').on('click', '.gif', function() {
+// $(document).on('click', '.gif', function() {
 //     var src = $(this).attr("src");
 //   if($(this).hasClass('playing')){
 //      //stop

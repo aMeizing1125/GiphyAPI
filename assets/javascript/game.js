@@ -11,7 +11,7 @@ var newShowName;
 $(document).on("click", ".classShows", function () {
     var showName = $(this).attr("data-showName");
     var api_key = "api_key=4xwiyJAiQbV1UanpvfTtZQJnkETQG95Y";
-    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + showName + "&" + api_key;
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + showName + "&" + api_key +"&limit=10";
     getGifs(queryURL);
 })
 
@@ -101,7 +101,8 @@ function getGifs(queryURL) {
 //     }
 // })
 //OPTION 2 found online stackoverflow. My brain finds this easier to read and create tahn the above. particularly the this inside of this already
-//  $("#photo").append('<img class="gif" src="' + response.data[i].images.fixed_height_still.url + '">');
+// This doesn't work.. needs to be some where else. like within something. notsure
+//  $("#gifs-appear-here").append('<img class="gif" src="' + response.data[i].images.fixed_height_still.url + '">');
 // $(document).on('click', '.gif', function() {
 //     var src = $(this).attr("src");
 //   if($(this).hasClass('playing')){

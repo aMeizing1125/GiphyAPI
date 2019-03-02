@@ -4,15 +4,35 @@
 //Array
 
 amazingShows = ["Archer", "Boondocks", "Cowboy Bebop", "Daria", "Futurama", "Rick and Morty", "Samurai Jack"];
-rating = ["y", "g", "pg", "pg-13", "r"];
+// rating = ["y", "g", "pg", "pg-13", "r"];
 var newShowName;
 
 //buttons are dynamics created so it needs to be this way. 
 $(document).on("click", ".classShows", function () {
+    $('#gifs-appear-here').empty();
     var showName = $(this).attr("data-showName");
     var api_key = "api_key=4xwiyJAiQbV1UanpvfTtZQJnkETQG95Y";
-    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + showName + "&" + api_key +"&limit=10";
+    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + showName + "&" + api_key + "&limit=10";
     getGifs(queryURL);
+
+    $.ajax({
+
+        url: queryURL,
+        method: "GET",
+
+    }).done (function (response) {
+        var results = response.data;
+        for (var i = 0; i < results.length; i++) {
+            var gifDiv = $("<div>");
+            var rating = results[i].rating;
+            var p = $("<p>").text("Rating: " + rating);
+            var showImage = $("<img>");
+            showImage.attr("src", results[i].images.fixed_height.url);
+            gifDiv.prepend(p);
+            gifDiv.prepend(showImage);
+            $("#gifs-appear-here").prepend(gifDiv);
+        };
+    });
 })
 
 
@@ -38,68 +58,35 @@ renderButtons();
 
 $("#submit").on("click", function (event) {
     event.preventDefault();
-    //commented this out since newShowname.length isn't right and I need it to be. 
-    // if (newShowName.length > 0) {
     newShowName = $("#amazingShowsInput").val().trim();
-    amazingShows.push(newShowName);
-    renderButtons();
-    // }else {
-    // alert("type something silly");
-    // }
-
+    if (newShowName.length > 0) {
+        amazingShows.push(newShowName);
+        renderButtons();
+    } else {
+        alert("type something silly");
+    }
 })
 
 function getGifs(queryURL) {
 
     //add for loop to go through ratings array for more DRY. 
-    $.ajax({
-        // this line below isn't right after .something()
 
-        url: queryURL,
-        method: "GET",
-        // data: {
-        //     api_key: "4xwiyJAiQbV1UanpvfTtZQJnkETQG95Y",
-        //     rating: "y",
-        //     limit: 3,
-        //     // q: ,       
-        // },
-    }).then(function (response) {
-        // //activity06
-        // $("#movie-view").text(JSON.strigify(response, null, 2))
-        // //class activity
-        // // this is in the function so we don't need to repeat. DRY
-        // var newRow = $("<tr>"); //creates row Rename <img>? 
-        // var newTitle = $("<td>").text(response.Title);//calls the new data
-        // // Create and save a reference to new empty table row
-        // var titleID = $("<td>").text(response.Title);
-        // newRow.append(newTitle);
-        // newRow.append(newYear);
-        // newRow.apped(newActors);
-        var results = response.data;
-        for (var i = 0; i < results.length; i++) {
-            var gifDiv = $("<div>");
-            var rating = results[i].rating;
-            var p = $("<p>").text("Rating: " + rating);
-            var showImage = $("<img>");
-            showImage.attr("src", results[i].images.fixed_height.url);
-            gifDiv.prepend(p);
-            gifDiv.prepend(showImage);
-            $("#gifs-appear-here").prepend(gifDiv);
-        }
-    });
 };
+//studying with Alyssa
+
+
 //WORK IN PROGRESS HERE!!! ***
 //OPTION 1 
-// $(document).on('click', 'img', function () {
-//     var state = $(this).attr("data-state");
-//     if (state === "still") {
-//         $(this).attr("src", $(this).attr("data-animate"));
-//         $(this).attr("data-animate", "animate");
-//     } else {
-//         $(this).attr("src", $(this).attr("data-still"));
-//         $(this).attr("data-state", "still")
-//     }
-// })
+$(document).on('click', 'img', function () {
+    var state = $(this).attr("data-state");
+    if (state === "still") {
+        $(this).attr("src", $(this).attr("data-animate"));
+        $(this).attr("data-animate", "animate");
+    } else {
+        $(this).attr("src", $(this).attr("data-still"));
+        $(this).attr("data-state", "still")
+    }
+})
 //OPTION 2 found online stackoverflow. My brain finds this easier to read and create tahn the above. particularly the this inside of this already
 // This doesn't work.. needs to be some where else. like within something. notsure
 //  $("#gifs-appear-here").append('<img class="gif" src="' + response.data[i].images.fixed_height_still.url + '">');
@@ -116,8 +103,7 @@ function getGifs(queryURL) {
 //   }
 // });
 
-function createButton() {
-}
+function createButton() {}
 //renamed class .button
 
 // $("button").on("click", function() {

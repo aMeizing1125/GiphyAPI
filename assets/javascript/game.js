@@ -13,21 +13,29 @@ $(document).on("click", ".classShows", function () {
     getGifs(queryURL);
 })
 
-$(document).on("click", ".gif", function(){
+$(document).on("click", ".gif", function () {
     var thisGif = $(this);
-    var state = $(this).attr(".gif");  
+    var state = $(this).attr(".gif");
     var staticURL = $(this).attr("imgStatic");
     var animateURL = $(this).attr("imgAnimate");
     // console.log(staticURL);
-    if ((thisGif.attr("state") === "animated")) {
+
+
+    if ((thisGif.attr("state") === "static")) {
+        thisGif.attr("state", "animated");
+        thisGif.attr("src", animateURL);
+      
+    } else {
         thisGif.attr("state", "static");
         thisGif.attr("src", staticURL);
-        
-    }else {
-        thisGif.attr("state", "animated");
-        // console.log('else works');
-        thisGif.attr("src", animateURL);
+      
     }
+    //had to swap it out had it animated not static when page loaded. 
+
+
+    // }else {
+
+    // }
 });
 
 function renderButtons() {
@@ -41,7 +49,7 @@ function renderButtons() {
         var $createButton = $("<button>")
             .addClass("classShows btn")
             .attr("data-showName", showName)
-            .text(showName);   
+            .text(showName);
 
         $buttonContainer.append($createButton);
     });
@@ -52,7 +60,7 @@ renderButtons();
 
 
 function getGifs(queryURL) {
-
+$('#gifs-appear-here').empty();
     //add for loop to go through ratings array for more DRY. 
     $.ajax({
         url: queryURL,
@@ -66,8 +74,8 @@ function getGifs(queryURL) {
             var p = $("<p>").text("Rating: " + rating);
             var showImage = $("<img>");
             showImage.addClass("gif");
-            showImage.attr("state", "animated");
-            showImage.attr("src", results[i].images.fixed_height.url);
+            showImage.attr("state", "static"); // this needs to be "state", "static" 
+            showImage.attr("src", results[i].images.fixed_height_still.url);
             showImage.attr("imgAnimate", results[i].images.fixed_height.url);
             showImage.attr("imgStatic", results[i].images.fixed_height_still.url);
             gifDiv.prepend(p);

@@ -1,12 +1,17 @@
-body {
-  background-image: url("../images/photosBackground.jpg");
-  opacity: .7;
-
-
-}
+/* so I know my CSS is lacking but the functionality is there.
+ And I need to go to the next homework and Project. Too much to do. Sorry it isn't prettier.  */
 
 #gifs-appear-here {
+  display: flex;
   flex-wrap: wrap;
+   
+}
+/* I can't figure out why it won't wrap. I got it to wrap once but it kept going all the way to the left.  */
+/* I DID IT! WHOOP WHOOP! That took way too long. */
+#gifs-appear-here > div > img{
+  width: 100%;
+  margin: 0 auto;
+  
 }
 
 buttons {

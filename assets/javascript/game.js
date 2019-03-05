@@ -47,7 +47,7 @@ function renderButtons() {
     amazingShows.forEach(function (showName) {
         console.log(showName);
         var $createButton = $("<button>")
-            .addClass("classShows btn")
+            .addClass("classShows btn btn-primary")
             .attr("data-showName", showName)
             .text(showName);
 

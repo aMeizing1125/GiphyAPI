@@ -45,7 +45,7 @@ function renderButtons() {
     //if you don't care about the index you can just do this, if you need the index, that is the 2nd parameter
     //in the amazingShows.forEach(function(showName, **iterator**){})
     amazingShows.forEach(function (showName) {
-        console.log(showName);
+        // console.log(showName);
         var $createButton = $("<button>")
             .addClass("classShows btn btn-primary")
             .attr("data-showName", showName)
